@@ -1,5 +1,4 @@
-"use client";
-
+import Image from "next/image";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
 
@@ -15,21 +14,23 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[90vh] flex items-center" id="cta-wa">
-      {/* Video Background Placeholder */}
+      {/* Static Image Background for better performance */}
       <div className="absolute inset-0 -z-10 overflow-hidden bg-secondary">
         <div className="relative h-full w-full">
-          {/* Placeholder visual */}
-          <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <div className="text-center opacity-30">
-              <svg className="mx-auto h-32 w-32 text-white/40" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={0.5} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-              </svg>
-            </div>
-          </div>
+          {/* Image Placeholder - replace with actual workshop photo */}
+          <Image
+            src="/images/hero-bg.jpg"
+            alt="Workshop Sentra Autoglass"
+            fill
+            priority
+            className="object-cover opacity-60"
+            sizes="100vw"
+          />
+          {/* Fallback gradient when image not loaded */}
+          <div className="absolute inset-0 bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 -z-10" />
           {/* Placeholder label */}
           <div className="absolute bottom-4 right-4 z-10 bg-black/60 px-3 py-1.5 text-xs text-white/80">
-            Placeholder - Ganti dengan video workshop Sentra Autoglass
+            Placeholder - Ganti dengan foto workshop Sentra Autoglass
           </div>
           <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
         </div>

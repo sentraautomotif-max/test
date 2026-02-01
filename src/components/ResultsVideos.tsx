@@ -1,36 +1,61 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { VIDEOS } from "@/data/videos";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
 
 export default function ResultsVideos() {
-  const refs = useRef<(HTMLVideoElement | null)[]>([]);
+  const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+  const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
   const waUrl = buildWhatsAppUrl(SITE.phone, "Halo Sentra, saya mau tanya tentang pemasangan kaca mobil. Mobil: [merek+tipe+tahun].");
 
+  // Observer to detect when section is visible
   useEffect(() => {
-    const videos = refs.current.filter(Boolean) as HTMLVideoElement[];
+    const section = sectionRef.current;
+    if (!section) return;
+
+    const sectionObserver = new IntersectionObserver(
+      ([entry]) => {
+        setIsVisible(entry.isIntersecting);
+      },
+      { threshold: 0.1 }
+    );
+
+    sectionObserver.observe(section);
+    return () => sectionObserver.disconnect();
+  }, []);
+
+  // Observer for individual video autoplay
+  useEffect(() => {
+    if (!isVisible) {
+      // Pause all videos when section is not visible
+      videoRefs.current.forEach((v) => v?.pause());
+      return;
+    }
+
+    const videos = videoRefs.current.filter(Boolean) as HTMLVideoElement[];
     if (!videos.length) return;
 
-    const io = new IntersectionObserver(
+    const videoObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const v = entry.target as HTMLVideoElement;
+          const video = entry.target as HTMLVideoElement;
           if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            v.play().catch(() => {});
+            video.play().catch(() => {});
           } else {
-            v.pause();
+            video.pause();
           }
         });
       },
       { threshold: [0, 0.5, 1] }
     );
 
-    videos.forEach((v) => io.observe(v));
-    return () => io.disconnect();
-  }, []);
+    videos.forEach((v) => videoObserver.observe(v));
+    return () => videoObserver.disconnect();
+  }, [isVisible]);
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -42,7 +67,7 @@ export default function ResultsVideos() {
   };
 
   return (
-    <section className="bg-secondary py-20" id="social-proof">
+    <section ref={sectionRef} className="bg-secondary py-20" id="social-proof">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex items-end justify-between">
           <div>
@@ -89,8 +114,8 @@ export default function ResultsVideos() {
               className="flex-shrink-0 w-[280px] md:w-[300px] snap-start overflow-hidden border border-secondary-foreground/10 bg-secondary-foreground/5"
             >
               <div className="relative aspect-[9/16]">
-                {/* Video placeholder with realistic styling */}
-                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900">
+                {/* Video placeholder shown when video not loaded */}
+                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900 -z-10">
                   <div className="flex h-full flex-col items-center justify-center p-4">
                     <svg className="h-16 w-16 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
@@ -101,17 +126,20 @@ export default function ResultsVideos() {
                     </p>
                   </div>
                 </div>
-                <video
-                  ref={(el) => {
-                    refs.current[idx] = el;
-                  }}
-                  className="h-full w-full object-cover"
-                  src={x.mp4}
-                  muted
-                  loop
-                  playsInline
-                  preload="none"
-                />
+                {/* Video - only loads when section is visible */}
+                {isVisible && (
+                  <video
+                    ref={(el) => {
+                      videoRefs.current[idx] = el;
+                    }}
+                    className="h-full w-full object-cover"
+                    src={x.mp4}
+                    muted
+                    loop
+                    playsInline
+                    preload="none"
+                  />
+                )}
                 <div className="absolute bottom-3 left-3 bg-black/70 px-3 py-1 text-xs font-medium text-white">
                   {x.label}
                 </div>

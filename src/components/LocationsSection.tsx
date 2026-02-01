@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
 import { MapPin } from "lucide-react";
@@ -11,9 +12,9 @@ const locations = [
     description: "Workshop aktif di Bekasi dengan teknisi berpengalaman. Melayani area Bekasi dan sekitarnya.",
     mapsUrl: "https://maps.google.com/?q=Sentra+Autoglass+Bekasi",
     images: [
-      { placeholder: "Foto workshop Bekasi tampak depan" },
-      { placeholder: "Suasana kerja workshop Bekasi" },
-      { placeholder: "Teknisi Bekasi sedang bekerja" },
+      { src: "/images/locations/bekasi-1.jpg", placeholder: "Foto workshop Bekasi tampak depan" },
+      { src: "/images/locations/bekasi-2.jpg", placeholder: "Suasana kerja workshop Bekasi" },
+      { src: "/images/locations/bekasi-3.jpg", placeholder: "Teknisi Bekasi sedang bekerja" },
     ],
   },
   {
@@ -22,9 +23,9 @@ const locations = [
     description: "Workshop di Tangerang siap melayani pemasangan kaca mobil Anda dengan standar profesional.",
     mapsUrl: "https://maps.google.com/?q=Sentra+Autoglass+Tangerang",
     images: [
-      { placeholder: "Foto workshop Tangerang tampak depan" },
-      { placeholder: "Suasana kerja workshop Tangerang" },
-      { placeholder: "Teknisi Tangerang sedang bekerja" },
+      { src: "/images/locations/tangerang-1.jpg", placeholder: "Foto workshop Tangerang tampak depan" },
+      { src: "/images/locations/tangerang-2.jpg", placeholder: "Suasana kerja workshop Tangerang" },
+      { src: "/images/locations/tangerang-3.jpg", placeholder: "Teknisi Tangerang sedang bekerja" },
     ],
   },
   {
@@ -33,9 +34,9 @@ const locations = [
     description: "Hadir di Surabaya untuk memenuhi kebutuhan pemasangan kaca mobil di Jawa Timur.",
     mapsUrl: "https://maps.google.com/?q=Sentra+Autoglass+Surabaya",
     images: [
-      { placeholder: "Foto workshop Surabaya tampak depan" },
-      { placeholder: "Suasana kerja workshop Surabaya" },
-      { placeholder: "Teknisi Surabaya sedang bekerja" },
+      { src: "/images/locations/surabaya-1.jpg", placeholder: "Foto workshop Surabaya tampak depan" },
+      { src: "/images/locations/surabaya-2.jpg", placeholder: "Suasana kerja workshop Surabaya" },
+      { src: "/images/locations/surabaya-3.jpg", placeholder: "Teknisi Surabaya sedang bekerja" },
     ],
   },
 ];
@@ -68,21 +69,33 @@ export default function LocationsSection() {
                 key={l.slug}
                 className="border border-border bg-background overflow-hidden"
               >
-                {/* Image Gallery Placeholders */}
+                {/* Image Gallery with Next.js Image - lazy loaded */}
                 <div className="grid grid-cols-3 gap-1">
                   {l.images.map((img, idx) => (
                     <div
                       key={idx}
-                      className="relative aspect-video bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900"
+                      className="relative aspect-video overflow-hidden"
                     >
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <svg className="h-8 w-8 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      {/* Placeholder label */}
-                      <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1 text-[10px] text-white/80 text-center leading-tight">
-                        Placeholder - {img.placeholder}
+                      {/* Next.js Image with lazy loading */}
+                      <Image
+                        src={img.src}
+                        alt={`${img.placeholder} - Sentra Autoglass ${l.city}`}
+                        fill
+                        loading="lazy"
+                        className="object-cover"
+                        sizes="(max-width: 768px) 33vw, 20vw"
+                      />
+                      {/* Fallback placeholder */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900 -z-10">
+                        <div className="absolute inset-0 flex items-center justify-center">
+                          <svg className="h-8 w-8 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                          </svg>
+                        </div>
+                        {/* Placeholder label */}
+                        <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1 text-[10px] text-white/80 text-center leading-tight">
+                          Placeholder - {img.placeholder}
+                        </div>
                       </div>
                     </div>
                   ))}

@@ -7,10 +7,32 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
 
-const articles: Record<string, { title: string; description: string; content: string[] }> = {
+// Tags for SEO - related search keywords
+const allTags = [
+  { slug: "ganti-kaca-mobil", label: "Ganti Kaca Mobil" },
+  { slug: "kaca-depan-mobil", label: "Kaca Depan Mobil" },
+  { slug: "kaca-oem", label: "Kaca OEM" },
+  { slug: "kaca-aftermarket", label: "Kaca Aftermarket" },
+  { slug: "pemasangan-kaca", label: "Pemasangan Kaca" },
+  { slug: "kaca-mobil-retak", label: "Kaca Mobil Retak" },
+  { slug: "home-service-kaca", label: "Home Service Kaca" },
+  { slug: "garansi-kaca-mobil", label: "Garansi Kaca Mobil" },
+  { slug: "kaca-mobil-bocor", label: "Kaca Mobil Bocor" },
+  { slug: "windshield", label: "Windshield" },
+];
+
+const articles: Record<string, { 
+  title: string; 
+  description: string; 
+  content: string[];
+  tags: string[];
+  relatedArticles: string[];
+}> = {
   "kapan-harus-ganti-kaca-depan-mobil": {
     title: "Kapan Harus Ganti Kaca Depan Mobil?",
     description: "Kenali tanda-tanda kerusakan kaca depan yang perlu segera diganti untuk keamanan berkendara Anda.",
+    tags: ["ganti-kaca-mobil", "kaca-depan-mobil", "kaca-mobil-retak", "windshield"],
+    relatedArticles: ["perbedaan-kaca-oem-dan-aftermarket", "keamanan-pemasangan-kaca-mobil"],
     content: [
       "Kaca depan mobil adalah komponen penting yang melindungi pengemudi dan penumpang dari berbagai elemen luar. Ketika kaca depan mengalami kerusakan, penting untuk mengetahui kapan harus memperbaiki atau menggantinya.",
       "Berikut adalah tanda-tanda kaca depan perlu diganti:",
@@ -23,6 +45,8 @@ const articles: Record<string, { title: string; description: string; content: st
   "perbedaan-kaca-oem-dan-aftermarket": {
     title: "Perbedaan Kaca OEM dan Aftermarket",
     description: "Pahami kelebihan dan kekurangan masing-masing jenis kaca untuk memilih yang sesuai kebutuhan.",
+    tags: ["kaca-oem", "kaca-aftermarket", "ganti-kaca-mobil", "garansi-kaca-mobil"],
+    relatedArticles: ["kapan-harus-ganti-kaca-depan-mobil", "keamanan-pemasangan-kaca-mobil"],
     content: [
       "Saat memilih kaca pengganti untuk mobil Anda, dua pilihan utama yang tersedia adalah kaca OEM (Original Equipment Manufacturer) dan kaca aftermarket. Keduanya memiliki karakteristik berbeda.",
       "Kaca OEM adalah kaca yang diproduksi oleh pabrikan yang sama dengan yang memasok kaca ke pabrik mobil. Kaca ini memiliki spesifikasi yang identik dengan kaca asli kendaraan.",
@@ -35,6 +59,8 @@ const articles: Record<string, { title: string; description: string; content: st
   "keamanan-pemasangan-kaca-mobil": {
     title: "Pentingnya Pemasangan Kaca yang Benar",
     description: "Pemasangan kaca yang tidak tepat bisa membahayakan. Ketahui standar pemasangan yang aman.",
+    tags: ["pemasangan-kaca", "garansi-kaca-mobil", "kaca-mobil-bocor", "home-service-kaca"],
+    relatedArticles: ["kapan-harus-ganti-kaca-depan-mobil", "perbedaan-kaca-oem-dan-aftermarket"],
     content: [
       "Kaca depan mobil bukan hanya pelindung dari angin dan debu. Kaca depan adalah komponen struktural penting yang berkontribusi pada kekuatan keseluruhan bodi mobil.",
       "Dalam kecelakaan, kaca depan yang terpasang dengan benar dapat mencegah atap mobil collapse dan membantu airbag berfungsi dengan optimal.",
@@ -45,6 +71,16 @@ const articles: Record<string, { title: string; description: string; content: st
     ],
   },
 };
+
+// Helper to get tag label from slug
+function getTagLabel(tagSlug: string): string {
+  return allTags.find(t => t.slug === tagSlug)?.label || tagSlug;
+}
+
+// Helper to get article title from slug
+function getArticleTitle(articleSlug: string): string {
+  return articles[articleSlug]?.title || articleSlug;
+}
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -61,6 +97,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: article.title,
     description: article.description,
+    keywords: article.tags.map(t => getTagLabel(t)).join(", "),
   };
 }
 
@@ -101,6 +138,19 @@ export default async function ArtikelDetailPage({ params }: Props) {
               {article.title}
             </h1>
 
+            {/* Tags Section */}
+            <div className="mt-4 flex flex-wrap gap-2">
+              {article.tags.map((tagSlug) => (
+                <Link
+                  key={tagSlug}
+                  href={`/artikel?tag=${tagSlug}`}
+                  className="inline-flex items-center px-3 py-1 text-xs font-medium bg-secondary text-secondary-foreground hover:bg-primary hover:text-primary-foreground transition-colors"
+                >
+                  {getTagLabel(tagSlug)}
+                </Link>
+              ))}
+            </div>
+
             <div className="mt-8 space-y-6">
               {article.content.map((paragraph, index) => (
                 <p key={index} className="text-base leading-relaxed text-muted-foreground">
@@ -109,6 +159,52 @@ export default async function ArtikelDetailPage({ params }: Props) {
               ))}
             </div>
 
+            {/* Internal Links Section */}
+            <div className="mt-12 border-t border-border pt-8">
+              <h2 className="text-lg font-semibold text-foreground">
+                Layanan Kami
+              </h2>
+              <ul className="mt-4 space-y-2">
+                <li>
+                  <Link href="/#home-service" className="text-sm text-primary hover:underline">
+                    Layanan Home Service - Teknisi datang ke lokasi Anda
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/#lokasi" className="text-sm text-primary hover:underline">
+                    Lokasi Workshop - Tangerang, Bekasi, Surabaya
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/#gallery" className="text-sm text-primary hover:underline">
+                    Galeri Hasil Pemasangan Kaca Mobil
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Related Articles */}
+            {article.relatedArticles.length > 0 && (
+              <div className="mt-8 border-t border-border pt-8">
+                <h2 className="text-lg font-semibold text-foreground">
+                  Artikel Terkait
+                </h2>
+                <ul className="mt-4 space-y-2">
+                  {article.relatedArticles.map((relatedSlug) => (
+                    <li key={relatedSlug}>
+                      <Link 
+                        href={`/artikel/${relatedSlug}`} 
+                        className="text-sm text-primary hover:underline"
+                      >
+                        {getArticleTitle(relatedSlug)}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* CTA Section */}
             <div className="mt-12 border-t border-border pt-8">
               <p className="text-base font-semibold text-foreground">
                 Butuh konsultasi tentang kaca mobil Anda?

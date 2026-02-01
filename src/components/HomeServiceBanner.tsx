@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
 
@@ -11,19 +12,30 @@ export default function HomeServiceBanner() {
     <section className="bg-secondary py-20" id="home-service">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
-          {/* Image placeholder - Home Service */}
-          <div className="relative aspect-video w-full overflow-hidden bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900 md:w-1/2">
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center px-4">
-                <svg className="mx-auto h-16 w-16 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                </svg>
-                <p className="mt-3 text-sm text-white/40">Teknisi Home Service</p>
+          {/* Image with Next.js Image - lazy loaded */}
+          <div className="relative aspect-video w-full overflow-hidden md:w-1/2">
+            <Image
+              src="/images/home-service.jpg"
+              alt="Teknisi Sentra Autoglass melakukan pemasangan kaca mobil di lokasi pelanggan"
+              fill
+              loading="lazy"
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+            />
+            {/* Fallback placeholder */}
+            <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900 -z-10">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center px-4">
+                  <svg className="mx-auto h-16 w-16 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                  <p className="mt-3 text-sm text-white/40">Teknisi Home Service</p>
+                </div>
               </div>
-            </div>
-            {/* Placeholder label */}
-            <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 text-xs text-white/80 text-center">
-              Placeholder - Ganti dengan foto teknisi datang ke lokasi pelanggan
+              {/* Placeholder label */}
+              <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 text-xs text-white/80 text-center">
+                Placeholder - Ganti dengan foto teknisi datang ke lokasi pelanggan
+              </div>
             </div>
           </div>
 
