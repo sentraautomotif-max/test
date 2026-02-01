@@ -15,10 +15,10 @@ export default function BrandPartners() {
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center">
           <span className="text-xs font-medium uppercase tracking-wider text-primary">
-            Quality Materials
+            Material Berkualitas
           </span>
           <h2 className="mt-2 text-xl font-bold tracking-tight text-foreground md:text-2xl">
-            Using Trusted Automotive Materials
+            Menggunakan Material & Kaca Terpercaya
           </h2>
         </div>
 

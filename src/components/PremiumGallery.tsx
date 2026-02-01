@@ -5,8 +5,8 @@ const galleryItems = [
   { id: 2, car: "Mercedes-Benz", src: "/images/gallery/mercedes.jpg" },
   { id: 3, car: "Toyota Alphard", src: "/images/gallery/alphard.jpg" },
   { id: 4, car: "Lexus", src: "/images/gallery/lexus.jpg" },
-  { id: 5, car: "Electric Vehicle", src: "/images/gallery/ev.jpg" },
-  { id: 6, car: "Premium SUV", src: "/images/gallery/suv.jpg" },
+  { id: 5, car: "Toyota Avanza", src: "/images/gallery/avanza.jpg" },
+  { id: 6, car: "Honda Jazz", src: "/images/gallery/jazz.jpg" },
 ];
 
 export default function PremiumGallery() {
@@ -15,13 +15,13 @@ export default function PremiumGallery() {
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center">
           <span className="text-xs font-medium uppercase tracking-wider text-primary">
-            Our Work
+            Galeri
           </span>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Trusted by Premium Car Owners
+            Dipercaya untuk Mobil Premium & Harian
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-            From luxury sedans to everyday vehicles, we deliver the same professional quality for every installation.
+            Dari sedan mewah hingga mobil harian, kami mengerjakan dengan standar profesional yang sama untuk setiap pemasangan.
           </p>
         </div>
 
@@ -31,11 +31,11 @@ export default function PremiumGallery() {
               key={item.id}
               className="group relative aspect-[4/3] overflow-hidden bg-muted"
             >
-              {/* Placeholder - replace with real images */}
+              {/* Placeholder - ganti dengan foto asli */}
               <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-secondary/80 to-secondary">
                 <div className="text-center">
                   <div className="text-4xl text-secondary-foreground/20">
-                    <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg className="mx-auto h-16 w-16" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
                   </div>
