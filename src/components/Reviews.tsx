@@ -65,6 +65,10 @@ export default function Reviews() {
               4.9 rating di Google Reviews
             </span>
           </div>
+          {/* Placeholder note */}
+          <p className="mt-2 text-[10px] text-muted-foreground/50">
+            Placeholder - Ganti dengan testimoni pelanggan asli
+          </p>
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">

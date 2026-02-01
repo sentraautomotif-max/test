@@ -11,15 +11,19 @@ export default function HomeServiceBanner() {
     <section className="bg-secondary py-20" id="home-service">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex flex-col items-center gap-10 md:flex-row md:gap-16">
-          {/* Image placeholder */}
-          <div className="relative aspect-video w-full overflow-hidden bg-secondary-foreground/10 md:w-1/2">
+          {/* Image placeholder - Home Service */}
+          <div className="relative aspect-video w-full overflow-hidden bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900 md:w-1/2">
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <svg className="mx-auto h-20 w-20 text-secondary-foreground/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+              <div className="text-center px-4">
+                <svg className="mx-auto h-16 w-16 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                 </svg>
-                <p className="mt-2 text-sm text-secondary-foreground/40">Foto Home Service</p>
+                <p className="mt-3 text-sm text-white/40">Teknisi Home Service</p>
               </div>
+            </div>
+            {/* Placeholder label */}
+            <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-3 py-2 text-xs text-white/80 text-center">
+              Placeholder - Ganti dengan foto teknisi datang ke lokasi pelanggan
             </div>
           </div>
 
