@@ -1,30 +1,30 @@
 export const FAQ_ITEMS = [
   {
-    q: "How long does windshield installation take?",
-    a: "Typically 60-120 minutes depending on the vehicle type and complexity.",
+    q: "Berapa lama waktu pemasangan kaca depan?",
+    a: "Biasanya membutuhkan waktu 60-120 menit tergantung tipe kendaraan dan tingkat kesulitan.",
   },
   {
-    q: "Is home service available?",
-    a: "Yes. Our team will inform you about area coverage and available schedules.",
+    q: "Apakah tersedia layanan home service?",
+    a: "Ya, tersedia. Tim kami akan menginformasikan jangkauan area dan jadwal yang tersedia.",
   },
   {
-    q: "What does the leak warranty cover?",
-    a: "The warranty covers leaks caused by the installation process for up to 3 years.",
+    q: "Apa saja yang dijamin dalam garansi kebocoran?",
+    a: "Garansi mencakup kebocoran yang disebabkan oleh proses pemasangan hingga 3 tahun.",
   },
   {
-    q: "Is installation safe for vehicles with sensors?",
-    a: "Yes. We check and accommodate glass requirements based on your vehicle type.",
+    q: "Apakah pemasangan aman untuk kendaraan dengan sensor?",
+    a: "Ya, aman. Kami menyesuaikan kebutuhan kaca berdasarkan tipe kendaraan Anda.",
   },
   {
-    q: "Do you use original or aftermarket glass?",
-    a: "We help recommend options based on your needs, budget, and availability.",
+    q: "Apakah menggunakan kaca original atau aftermarket?",
+    a: "Kami membantu merekomendasikan pilihan sesuai kebutuhan, budget, dan ketersediaan.",
   },
   {
-    q: "Can I get same-day installation?",
-    a: "Depending on stock and queue. Chat via WhatsApp to check the fastest available schedule.",
+    q: "Bisa pemasangan di hari yang sama?",
+    a: "Tergantung stok dan antrian. Chat via WhatsApp untuk mengecek jadwal tercepat yang tersedia.",
   },
   {
-    q: "Is home service safe for windshield installation?",
-    a: "Yes. Home service follows the same work standards as workshop installation.",
+    q: "Apakah home service aman untuk pemasangan kaca depan?",
+    a: "Ya, aman. Home service mengikuti standar kerja yang sama dengan pemasangan di workshop.",
   },
 ] as const;

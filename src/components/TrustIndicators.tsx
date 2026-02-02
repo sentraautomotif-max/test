@@ -3,23 +3,23 @@ import { Building2, Car, Shield, Award } from "lucide-react";
 const indicators = [
   {
     icon: Building2,
-    value: "3",
-    label: "Active Workshops",
+    value: "3+",
+    label: "Workshop Aktif",
   },
   {
     icon: Car,
-    value: "1000+",
-    label: "Cars Installed",
+    value: "Ribuan",
+    label: "Mobil Ditangani",
   },
   {
     icon: Award,
     value: "Premium",
-    label: "& Daily Cars",
+    label: "& Mobil Harian",
   },
   {
     icon: Shield,
-    value: "3 Years",
-    label: "Leak Warranty",
+    value: "3 Tahun",
+    label: "Garansi Kebocoran",
   },
 ];
 

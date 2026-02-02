@@ -3,39 +3,39 @@ import { CheckCircle2, Wrench, Home, ClipboardCheck } from "lucide-react";
 const benefits = [
   {
     icon: CheckCircle2,
-    title: "Clear Work Standards",
-    desc: "Installation process follows consistent SOPs, whether at workshop or home service.",
+    title: "Standar Kerja Jelas",
+    desc: "Proses pemasangan mengikuti SOP yang konsisten, baik di workshop maupun home service.",
   },
   {
     icon: Wrench,
     title: "Workshop & Home Service",
-    desc: "Visit our workshop or our technicians come to your location.",
+    desc: "Kunjungi workshop kami atau teknisi kami yang datang ke lokasi Anda.",
   },
   {
     icon: ClipboardCheck,
     title: "Quality Checked",
-    desc: "Inspected before and after installation for comfortable, safe results.",
+    desc: "Diperiksa sebelum dan sesudah pemasangan untuk hasil yang nyaman dan aman.",
   },
   {
     icon: Home,
-    title: "Real Workshop, Real Team",
-    desc: "Established workshops with experienced technicians you can trust.",
+    title: "Workshop & Tim Nyata",
+    desc: "Workshop yang mapan dengan teknisi berpengalaman yang bisa Anda percaya.",
   },
 ];
 
 export default function Benefits() {
   return (
-    <section className="bg-muted py-20" id="garansi">
+    <section className="bg-background py-20" id="garansi">
       <div className="mx-auto max-w-6xl px-4">
         <div className="text-center">
           <span className="text-xs font-medium uppercase tracking-wider text-primary">
-            Why Choose Us
+            Kenapa Pilih Kami
           </span>
           <h2 className="mt-2 text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Our Work Standards
+            Standar Kerja Kami
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-base text-muted-foreground">
-            Simple goal: clean, safe, and comfortable results.
+            Tujuan sederhana: hasil yang bersih, aman, dan nyaman.
           </p>
         </div>
 

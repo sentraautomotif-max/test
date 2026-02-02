@@ -4,11 +4,10 @@ import TrustIndicators from "@/components/TrustIndicators";
 import ResultsVideos from "@/components/ResultsVideos";
 import PremiumGallery from "@/components/PremiumGallery";
 import BrandPartners from "@/components/BrandPartners";
-import Benefits from "@/components/Benefits";
 import Reviews from "@/components/Reviews";
 import HomeServiceBanner from "@/components/HomeServiceBanner";
+import ArticleTeaser from "@/components/ArticleTeaser";
 import LocationsSection from "@/components/LocationsSection";
-import TeamSection from "@/components/TeamSection";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -24,7 +23,7 @@ export default function HomePage() {
         {/* Trust indicators - quick stats */}
         <TrustIndicators />
         
-        {/* Video process slider */}
+        {/* Social proof video slider */}
         <ResultsVideos />
         
         {/* Premium car gallery */}
@@ -33,20 +32,17 @@ export default function HomePage() {
         {/* Brand partners */}
         <BrandPartners />
         
-        {/* Benefits / work standards */}
-        <Benefits />
-        
         {/* Customer reviews */}
         <Reviews />
         
         {/* Home service banner */}
         <HomeServiceBanner />
         
+        {/* Article teaser for SEO */}
+        <ArticleTeaser />
+        
         {/* Locations */}
         <LocationsSection />
-        
-        {/* Team section */}
-        <TeamSection />
         
         {/* FAQ */}
         <FAQ />

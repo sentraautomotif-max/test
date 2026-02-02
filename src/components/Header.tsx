@@ -7,7 +7,7 @@ import { buildWhatsAppUrl } from "@/lib/tracking";
 
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const waUrl = buildWhatsAppUrl(SITE.phone, "Halo Sentra, saya mau konsultasi ganti kaca depan.");
+  const waUrl = buildWhatsAppUrl(SITE.phone, "Halo Sentra, saya mau konsultasi pemasangan kaca mobil.");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,12 +34,12 @@ export default function Header() {
 
         <nav className="hidden items-center gap-8 text-sm md:flex">
           <a
-            href="#process"
+            href="#social-proof"
             className={`font-medium transition-colors hover:text-primary ${
               isScrolled ? "text-muted-foreground" : "text-white/80 hover:text-white"
             }`}
           >
-            Process
+            Hasil Kerja
           </a>
           <a
             href="#gallery"
@@ -47,7 +47,7 @@ export default function Header() {
               isScrolled ? "text-muted-foreground" : "text-white/80 hover:text-white"
             }`}
           >
-            Gallery
+            Galeri
           </a>
           <a
             href="#lokasi"
@@ -55,7 +55,7 @@ export default function Header() {
               isScrolled ? "text-muted-foreground" : "text-white/80 hover:text-white"
             }`}
           >
-            Locations
+            Lokasi
           </a>
           <a
             href="#faq"
@@ -71,7 +71,7 @@ export default function Header() {
           href={waUrl}
           className="bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
         >
-          WhatsApp
+          Chat Admin
         </a>
       </div>
     </header>

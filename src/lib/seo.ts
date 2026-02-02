@@ -3,5 +3,5 @@ export const SITE = {
   url: "https://sentraautoglass.com",
   phone: "6281281161200",
   description:
-    "Professional windshield installation with clear work standards. Workshop & Home Service in Tangerang, Bekasi, and Surabaya. Up to 3 years leak warranty.",
+    "Spesialis pemasangan dan penggantian kaca mobil dengan standar kerja profesional. Workshop dan Home Service di Tangerang, Bekasi, dan Surabaya. Garansi kebocoran hingga 3 tahun.",
 };

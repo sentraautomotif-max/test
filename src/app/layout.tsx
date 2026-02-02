@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"], display: "swap" });
 export const metadata: Metadata = {
   metadataBase: new URL(SITE.url),
   title: {
-    default: "Professional Windshield Installation | Sentra Autoglass",
+    default: "Spesialis Pemasangan & Penggantian Kaca Mobil | Sentra Autoglass",
     template: "%s | Sentra Autoglass",
   },
   description: SITE.description,
@@ -17,14 +17,14 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: SITE.url,
-    title: "Professional Windshield Installation | Sentra Autoglass",
+    title: "Spesialis Pemasangan & Penggantian Kaca Mobil | Sentra Autoglass",
     description: SITE.description,
     siteName: SITE.name,
-    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Sentra Autoglass" }],
+    images: [{ url: "/og.jpg", width: 1200, height: 630, alt: "Sentra Autoglass - Spesialis Kaca Mobil" }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Professional Windshield Installation | Sentra Autoglass",
+    title: "Spesialis Pemasangan & Penggantian Kaca Mobil | Sentra Autoglass",
     description: SITE.description,
     images: ["/og.jpg"],
   },
