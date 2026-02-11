@@ -1,15 +1,11 @@
 import type { MetadataRoute } from "next";
 import { SITE } from "@/lib/seo";
-
-const articleSlugs = [
-  "kapan-harus-ganti-kaca-depan-mobil",
-  "perbedaan-kaca-oem-dan-aftermarket",
-  "keamanan-pemasangan-kaca-mobil",
-];
+import { articles } from "@/data/articles";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const articleUrls = articleSlugs.map((slug) => ({
-    url: `${SITE.url}/artikel/${slug}`,
+  const articleUrls = articles.map((article) => ({
+    url: `${SITE.url}/artikel/${article.slug}`,
+    lastModified: new Date(article.date),
     changeFrequency: "monthly" as const,
     priority: 0.7,
   }));

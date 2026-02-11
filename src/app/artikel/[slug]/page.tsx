@@ -4,6 +4,7 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { articles, type Article } from "@/data/articles";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
 
@@ -18,68 +19,73 @@ const allTags = [
   { slug: "home-service-kaca", label: "Home Service Kaca" },
   { slug: "garansi-kaca-mobil", label: "Garansi Kaca Mobil" },
   { slug: "kaca-mobil-bocor", label: "Kaca Mobil Bocor" },
-  { slug: "windshield", label: "Windshield" },
+  { slug: "perawatan-kaca", label: "Perawatan Kaca" },
+  { slug: "kaca-samping-mobil", label: "Kaca Samping" },
+  { slug: "kaca-belakang-mobil", label: "Kaca Belakang" },
 ];
 
-const articles: Record<string, { 
-  title: string; 
-  description: string; 
-  content: string[];
-  tags: string[];
-  relatedArticles: string[];
-}> = {
-  "kapan-harus-ganti-kaca-depan-mobil": {
-    title: "Kapan Harus Ganti Kaca Depan Mobil?",
-    description: "Kenali tanda-tanda kerusakan kaca depan yang perlu segera diganti untuk keamanan berkendara Anda.",
-    tags: ["ganti-kaca-mobil", "kaca-depan-mobil", "kaca-mobil-retak", "windshield"],
-    relatedArticles: ["perbedaan-kaca-oem-dan-aftermarket", "keamanan-pemasangan-kaca-mobil"],
-    content: [
-      "Kaca depan mobil adalah komponen penting yang melindungi pengemudi dan penumpang dari berbagai elemen luar. Ketika kaca depan mengalami kerusakan, penting untuk mengetahui kapan harus memperbaiki atau menggantinya.",
-      "Berikut adalah tanda-tanda kaca depan perlu diganti:",
-      "Retak yang memanjang lebih dari 30 cm biasanya sudah tidak bisa diperbaiki dan perlu penggantian. Retakan panjang dapat mengganggu struktur kaca dan membahayakan keamanan.",
-      "Keretakan di area pandang pengemudi dapat mengganggu visibilitas dan berbahaya saat berkendara. Meskipun retaknya kecil, jika berada di area pandang utama, sebaiknya segera diganti.",
-      "Kaca yang sudah kabur atau berjamur tidak hanya mengganggu estetika, tapi juga dapat mengurangi kejernihan pandangan, terutama saat berkendara di malam hari atau kondisi hujan.",
-      "Jika Anda mengalami kecelakaan dan kaca depan terkena benturan, meskipun terlihat tidak ada kerusakan yang berarti, ada baiknya untuk memeriksakan kaca ke profesional.",
-    ],
-  },
-  "perbedaan-kaca-oem-dan-aftermarket": {
-    title: "Perbedaan Kaca OEM dan Aftermarket",
-    description: "Pahami kelebihan dan kekurangan masing-masing jenis kaca untuk memilih yang sesuai kebutuhan.",
-    tags: ["kaca-oem", "kaca-aftermarket", "ganti-kaca-mobil", "garansi-kaca-mobil"],
-    relatedArticles: ["kapan-harus-ganti-kaca-depan-mobil", "keamanan-pemasangan-kaca-mobil"],
-    content: [
-      "Saat memilih kaca pengganti untuk mobil Anda, dua pilihan utama yang tersedia adalah kaca OEM (Original Equipment Manufacturer) dan kaca aftermarket. Keduanya memiliki karakteristik berbeda.",
-      "Kaca OEM adalah kaca yang diproduksi oleh pabrikan yang sama dengan yang memasok kaca ke pabrik mobil. Kaca ini memiliki spesifikasi yang identik dengan kaca asli kendaraan.",
-      "Kelebihan kaca OEM meliputi kualitas terjamin sesuai standar pabrikan, fit dan finish yang sempurna, serta garansi dari pabrikan. Namun, harganya cenderung lebih mahal.",
-      "Kaca aftermarket diproduksi oleh perusahaan pihak ketiga. Kualitasnya bervariasi tergantung merek dan produsen. Harganya umumnya lebih terjangkau dibanding OEM.",
-      "Kelebihan kaca aftermarket adalah harga lebih ekonomis dan ketersediaan yang lebih luas. Namun, kualitas bisa bervariasi dan mungkin ada perbedaan kecil dalam fit.",
-      "Tips memilih: Pertimbangkan budget, usia kendaraan, dan rencana kepemilikan jangka panjang. Konsultasikan dengan profesional untuk rekomendasi terbaik sesuai kebutuhan Anda.",
-    ],
-  },
-  "keamanan-pemasangan-kaca-mobil": {
-    title: "Pentingnya Pemasangan Kaca yang Benar",
-    description: "Pemasangan kaca yang tidak tepat bisa membahayakan. Ketahui standar pemasangan yang aman.",
-    tags: ["pemasangan-kaca", "garansi-kaca-mobil", "kaca-mobil-bocor", "home-service-kaca"],
-    relatedArticles: ["kapan-harus-ganti-kaca-depan-mobil", "perbedaan-kaca-oem-dan-aftermarket"],
-    content: [
-      "Kaca depan mobil bukan hanya pelindung dari angin dan debu. Kaca depan adalah komponen struktural penting yang berkontribusi pada kekuatan keseluruhan bodi mobil.",
-      "Dalam kecelakaan, kaca depan yang terpasang dengan benar dapat mencegah atap mobil collapse dan membantu airbag berfungsi dengan optimal.",
-      "Pemasangan yang tidak tepat dapat menyebabkan kaca lepas saat tabrakan, mengurangi efektivitas airbag penumpang, membiarkan air masuk dan merusak interior, serta menimbulkan suara angin yang mengganggu.",
-      "Standar pemasangan yang aman meliputi penggunaan lem/sealant berkualitas tinggi, waktu curing yang cukup sebelum kendaraan digunakan, pembersihan yang tepat sebelum pemasangan, dan pengecekan sensor jika ada.",
-      "Pastikan pemasangan dilakukan oleh teknisi berpengalaman yang memahami standar keamanan. Jangan terburu-buru menggunakan kendaraan setelah pemasangan.",
-      "Di Sentra Autoglass, kami mengikuti standar pemasangan yang ketat untuk memastikan keamanan Anda. Setiap pemasangan dilengkapi garansi kebocoran hingga 3 tahun.",
-    ],
-  },
-};
+// Helper function to parse markdown to HTML
+function parseMarkdownToHtml(markdown: string): string {
+  let html = markdown;
+
+  // Headers
+  html = html.replace(/^### (.*?)$/gm, "<h3 className=\"text-lg font-semibold text-foreground mt-4 mb-2\">$1</h3>");
+  html = html.replace(/^## (.*?)$/gm, "<h2 className=\"text-xl font-bold text-foreground mt-6 mb-3\">$1</h2>");
+  html = html.replace(/^# (.*?)$/gm, "<h1 className=\"text-2xl font-bold text-foreground mt-0 mb-4\">$1</h1>");
+
+  // Bold and italic
+  html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
+  html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
+
+  // Links
+  html = html.replace(/\[(.*?)\]\((.*?)\)/g, "<a href=\"$2\" className=\"text-primary hover:underline\">$1</a>");
+
+  // Lists (simple bullet points)
+  html = html.replace(/^- (.*?)$/gm, "<li className=\"ml-4\">$1</li>");
+
+  // Line breaks for paragraphs
+  const lines = html.split("\n");
+  let result = "";
+  let inList = false;
+  for (const line of lines) {
+    if (line.startsWith("<li")) {
+      if (!inList) {
+        result += "<ul className=\"list-disc pl-6 space-y-1 my-3\">";
+        inList = true;
+      }
+      result += line + "\n";
+    } else if (inList && !line.startsWith("<li")) {
+      result += "</ul>";
+      inList = false;
+      if (line.trim()) {
+        result += `<p className="text-base leading-relaxed text-muted-foreground my-3">${line}</p>`;
+      }
+    } else if (line.trim()) {
+      if (!line.startsWith("<h") && !line.startsWith("<p")) {
+        result += `<p className="text-base leading-relaxed text-muted-foreground my-3">${line}</p>`;
+      } else {
+        result += line;
+      }
+    }
+  }
+  if (inList) {
+    result += "</ul>";
+  }
+
+  return result;
+}
 
 // Helper to get tag label from slug
 function getTagLabel(tagSlug: string): string {
   return allTags.find(t => t.slug === tagSlug)?.label || tagSlug;
 }
 
-// Helper to get article title from slug
-function getArticleTitle(articleSlug: string): string {
-  return articles[articleSlug]?.title || articleSlug;
+// Helper to find related articles
+function getRelatedArticles(currentArticle: Article, limit: number = 3): Article[] {
+  const commonTags = currentArticle.tags;
+  return articles
+    .filter(a => a.slug !== currentArticle.slug && a.tags.some(t => commonTags.includes(t)))
+    .slice(0, limit);
 }
 
 type Props = {
@@ -88,7 +94,7 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const article = articles[slug];
+  const article = articles.find(a => a.slug === slug);
   
   if (!article) {
     return { title: "Artikel Tidak Ditemukan" };
@@ -96,27 +102,36 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   return {
     title: article.title,
-    description: article.description,
+    description: article.excerpt,
     keywords: article.tags.map(t => getTagLabel(t)).join(", "),
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      images: [{ url: article.coverImage, width: 1200, height: 630, alt: article.title }],
+    },
   };
 }
 
 export async function generateStaticParams() {
-  return Object.keys(articles).map((slug) => ({ slug }));
+  return articles.map((article) => ({ slug: article.slug }));
 }
 
 export default async function ArtikelDetailPage({ params }: Props) {
   const { slug } = await params;
-  const article = articles[slug];
+  const article = articles.find(a => a.slug === slug);
 
   if (!article) {
     notFound();
   }
 
+  const relatedArticles = getRelatedArticles(article);
   const waUrl = buildWhatsAppUrl(
     SITE.phone,
     "Halo Sentra, saya mau konsultasi ganti kaca mobil setelah membaca artikel di website. Mobil: [merek+tipe+tahun]."
   );
+
+  // Parse markdown content into sections
+  const contentLines = article.content.split("\n\n");
 
   return (
     <>
@@ -124,19 +139,24 @@ export default async function ArtikelDetailPage({ params }: Props) {
       <main className="pt-16">
         <article className="bg-background py-16">
           <div className="mx-auto max-w-3xl px-4">
-            <Link
-              href="/artikel"
-              className="inline-flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground"
-            >
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-              </svg>
-              Kembali ke Artikel
-            </Link>
+            {/* Breadcrumb */}
+            <nav className="flex items-center gap-2 text-sm text-muted-foreground mb-6">
+              <Link href="/" className="hover:text-foreground">Beranda</Link>
+              <span>/</span>
+              <Link href="/artikel" className="hover:text-foreground">Artikel</Link>
+              <span>/</span>
+              <span className="text-foreground">{article.title}</span>
+            </nav>
 
-            <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground md:text-4xl text-balance">
+            <h1 className="mt-2 text-3xl font-bold tracking-tight text-foreground md:text-4xl text-balance">
               {article.title}
             </h1>
+
+            <div className="mt-4 flex items-center gap-4 text-sm text-muted-foreground">
+              <span>{new Date(article.date).toLocaleDateString("id-ID", { year: "numeric", month: "long", day: "numeric" })}</span>
+              <span>•</span>
+              <span>Sentra Autoglass</span>
+            </div>
 
             {/* Tags Section */}
             <div className="mt-4 flex flex-wrap gap-2">
@@ -151,19 +171,77 @@ export default async function ArtikelDetailPage({ params }: Props) {
               ))}
             </div>
 
-            <div className="mt-8 space-y-6">
-              {article.content.map((paragraph, index) => (
-                <p key={index} className="text-base leading-relaxed text-muted-foreground">
-                  {paragraph}
-                </p>
-              ))}
+            {/* Article Content - Rendered from Markdown */}
+            <div className="mt-8 prose prose-invert max-w-none space-y-4">
+              {contentLines.map((section, index) => {
+                // Handle headers
+                if (section.startsWith("# ")) {
+                  const title = section.replace("# ", "");
+                  return <h1 key={index} className="text-2xl font-bold text-foreground mt-6 mb-4">{title}</h1>;
+                }
+                if (section.startsWith("## ")) {
+                  const title = section.replace("## ", "");
+                  return <h2 key={index} className="text-xl font-bold text-foreground mt-6 mb-3">{title}</h2>;
+                }
+                if (section.startsWith("### ")) {
+                  const title = section.replace("### ", "");
+                  return <h3 key={index} className="text-lg font-semibold text-foreground mt-4 mb-2">{title}</h3>;
+                }
+
+                // Handle lists
+                if (section.split("\n")[0]?.startsWith("- ")) {
+                  const items = section.split("\n").filter(line => line.startsWith("- "));
+                  return (
+                    <ul key={index} className="list-disc pl-6 space-y-1 my-3">
+                      {items.map((item, i) => (
+                        <li key={i} className="text-muted-foreground">{item.replace("- ", "")}</li>
+                      ))}
+                    </ul>
+                  );
+                }
+
+                // Handle regular paragraphs and tables
+                if (section.includes("|")) {
+                  // Simple table parsing
+                  return (
+                    <div key={index} className="overflow-x-auto my-4">
+                      <table className="min-w-full border-collapse border border-border">
+                        <tbody>
+                          {section.split("\n").map((row, i) => {
+                            if (!row.includes("|") || row.includes("---")) return null;
+                            const cells = row.split("|").slice(1, -1);
+                            return (
+                              <tr key={i} className="border border-border">
+                                {cells.map((cell, j) => (
+                                  <td key={j} className="border border-border px-4 py-2 text-sm text-muted-foreground">
+                                    {cell.trim()}
+                                  </td>
+                                ))}
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                }
+
+                // Regular paragraph
+                if (section.trim()) {
+                  return (
+                    <p key={index} className="text-base leading-relaxed text-muted-foreground">
+                      {section}
+                    </p>
+                  );
+                }
+
+                return null;
+              })}
             </div>
 
             {/* Internal Links Section */}
             <div className="mt-12 border-t border-border pt-8">
-              <h2 className="text-lg font-semibold text-foreground">
-                Layanan Kami
-              </h2>
+              <h2 className="text-lg font-semibold text-foreground">Layanan Kami</h2>
               <ul className="mt-4 space-y-2">
                 <li>
                   <Link href="/#home-service" className="text-sm text-primary hover:underline">
@@ -171,7 +249,7 @@ export default async function ArtikelDetailPage({ params }: Props) {
                   </Link>
                 </li>
                 <li>
-                  <Link href="/#lokasi" className="text-sm text-primary hover:underline">
+                  <Link href="/lokasi" className="text-sm text-primary hover:underline">
                     Lokasi Workshop - Tangerang, Bekasi, Surabaya
                   </Link>
                 </li>
@@ -180,23 +258,26 @@ export default async function ArtikelDetailPage({ params }: Props) {
                     Galeri Hasil Pemasangan Kaca Mobil
                   </Link>
                 </li>
+                <li>
+                  <Link href="/#faq" className="text-sm text-primary hover:underline">
+                    FAQ - Pertanyaan Umum
+                  </Link>
+                </li>
               </ul>
             </div>
 
             {/* Related Articles */}
-            {article.relatedArticles.length > 0 && (
+            {relatedArticles.length > 0 && (
               <div className="mt-8 border-t border-border pt-8">
-                <h2 className="text-lg font-semibold text-foreground">
-                  Artikel Terkait
-                </h2>
+                <h2 className="text-lg font-semibold text-foreground">Artikel Terkait</h2>
                 <ul className="mt-4 space-y-2">
-                  {article.relatedArticles.map((relatedSlug) => (
-                    <li key={relatedSlug}>
+                  {relatedArticles.map((relArticle) => (
+                    <li key={relArticle.slug}>
                       <Link 
-                        href={`/artikel/${relatedSlug}`} 
+                        href={`/artikel/${relArticle.slug}`} 
                         className="text-sm text-primary hover:underline"
                       >
-                        {getArticleTitle(relatedSlug)}
+                        {relArticle.title}
                       </Link>
                     </li>
                   ))}
@@ -223,6 +304,37 @@ export default async function ArtikelDetailPage({ params }: Props) {
                 Konsultasi Ganti Kaca Mobil via WhatsApp
               </a>
             </div>
+
+            {/* JSON-LD Schema for Article */}
+            <script
+              type="application/ld+json"
+              dangerouslySetInnerHTML={{
+                __html: JSON.stringify({
+                  "@context": "https://schema.org",
+                  "@type": "Article",
+                  headline: article.title,
+                  description: article.excerpt,
+                  image: article.coverImage,
+                  datePublished: article.date,
+                  author: {
+                    "@type": "Organization",
+                    name: "Sentra Autoglass",
+                  },
+                  publisher: {
+                    "@type": "Organization",
+                    name: "Sentra Autoglass",
+                    logo: {
+                      "@type": "ImageObject",
+                      url: `${SITE.url}/logo.png`,
+                    },
+                  },
+                  mainEntityOfPage: {
+                    "@type": "WebPage",
+                    "@id": `${SITE.url}/artikel/${slug}`,
+                  },
+                }),
+              }}
+            />
           </div>
         </article>
       </main>
