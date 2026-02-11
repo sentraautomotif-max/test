@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { VIDEOS } from "@/data/videos";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
@@ -9,53 +9,71 @@ export default function ResultsVideos() {
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
   const sectionRef = useRef<HTMLElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
+  // Track which individual videos are in viewport and should load
+  const [visibleVideos, setVisibleVideos] = useState<Set<number>>(new Set());
+  const [sectionVisible, setSectionVisible] = useState(false);
   const waUrl = buildWhatsAppUrl(SITE.phone, "Halo Sentra, saya mau tanya tentang pemasangan kaca mobil. Mobil: [merek+tipe+tahun].");
 
-  // Observer to detect when section is visible
+  // Observer to detect when section is near viewport (rootMargin loads 200px early)
   useEffect(() => {
     const section = sectionRef.current;
     if (!section) return;
 
     const sectionObserver = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        setSectionVisible(entry.isIntersecting);
       },
-      { threshold: 0.1 }
+      { threshold: 0.1, rootMargin: "200px" }
     );
 
     sectionObserver.observe(section);
     return () => sectionObserver.disconnect();
   }, []);
 
-  // Observer for individual video autoplay
+  // Track individual video card visibility for lazy loading + autoplay
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const setCardRef = useCallback((el: HTMLDivElement | null, idx: number) => {
+    cardRefs.current[idx] = el;
+  }, []);
+
   useEffect(() => {
-    if (!isVisible) {
-      // Pause all videos when section is not visible
+    if (!sectionVisible) {
+      // Pause all videos when section scrolls away
       videoRefs.current.forEach((v) => v?.pause());
       return;
     }
 
-    const videos = videoRefs.current.filter(Boolean) as HTMLVideoElement[];
-    if (!videos.length) return;
+    const cards = cardRefs.current.filter(Boolean) as HTMLDivElement[];
+    if (!cards.length) return;
 
-    const videoObserver = new IntersectionObserver(
+    const cardObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          const video = entry.target as HTMLVideoElement;
-          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
-            video.play().catch(() => {});
+          const idx = Number((entry.target as HTMLElement).dataset.idx);
+          if (isNaN(idx)) return;
+
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.3) {
+            // Mark this video for loading
+            setVisibleVideos((prev) => {
+              const next = new Set(prev);
+              next.add(idx);
+              return next;
+            });
+            // Play if video element exists
+            const video = videoRefs.current[idx];
+            if (video) video.play().catch(() => {});
           } else {
-            video.pause();
+            const video = videoRefs.current[idx];
+            if (video) video.pause();
           }
         });
       },
-      { threshold: [0, 0.5, 1] }
+      { threshold: [0, 0.3, 0.7, 1] }
     );
 
-    videos.forEach((v) => videoObserver.observe(v));
-    return () => videoObserver.disconnect();
-  }, [isVisible]);
+    cards.forEach((c) => cardObserver.observe(c));
+    return () => cardObserver.disconnect();
+  }, [sectionVisible]);
 
   const scroll = (direction: "left" | "right") => {
     if (!scrollRef.current) return;
@@ -108,51 +126,72 @@ export default function ResultsVideos() {
           ref={scrollRef}
           className="mt-8 flex gap-4 overflow-x-auto pb-4 hide-scrollbar snap-x snap-mandatory"
         >
-          {VIDEOS.map((x, idx) => (
-            <div
-              key={x.id}
-              className="flex-shrink-0 w-[280px] md:w-[300px] snap-start overflow-hidden border border-secondary-foreground/10 bg-secondary-foreground/5"
-            >
-              <div className="relative aspect-[9/16]">
-                {/* Video placeholder shown when video not loaded */}
-                <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900 -z-10">
-                  <div className="flex h-full flex-col items-center justify-center p-4">
-                    <svg className="h-16 w-16 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <p className="mt-3 text-center text-xs text-white/40 leading-relaxed">
-                      {x.title}
-                    </p>
+          {VIDEOS.map((x, idx) => {
+            const isVideoLoaded = visibleVideos.has(idx);
+            return (
+              <div
+                key={x.id}
+                ref={(el) => setCardRef(el, idx)}
+                data-idx={idx}
+                className="flex-shrink-0 w-[280px] md:w-[300px] snap-start overflow-hidden border border-secondary-foreground/10 bg-secondary-foreground/5"
+              >
+                {/* Fixed aspect ratio container prevents CLS */}
+                <div className="relative aspect-[9/16] overflow-hidden">
+                  {/* Static poster / placeholder -- always visible until video covers it */}
+                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-800 via-zinc-700 to-zinc-900">
+                    {x.poster ? (
+                      // If poster thumbnail exists, show it (avoids grey flash)
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img
+                        src={x.poster}
+                        alt={x.title}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                        width={300}
+                        height={533}
+                      />
+                    ) : (
+                      <div className="flex h-full flex-col items-center justify-center p-4">
+                        <svg className="h-16 w-16 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <p className="mt-3 text-center text-xs text-white/40 leading-relaxed">
+                          {x.title}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Video element -- only mounts when this card enters viewport */}
+                  {isVideoLoaded && (
+                    <video
+                      ref={(el) => {
+                        videoRefs.current[idx] = el;
+                      }}
+                      className="absolute inset-0 h-full w-full object-cover"
+                      src={x.mp4}
+                      poster={x.poster}
+                      muted
+                      loop
+                      playsInline
+                      preload="metadata"
+                      width={300}
+                      height={533}
+                    />
+                  )}
+
+                  <div className="absolute bottom-3 left-3 bg-black/70 px-3 py-1 text-xs font-medium text-white">
+                    {x.label}
                   </div>
                 </div>
-                {/* Video - only loads when section is visible */}
-                {isVisible && (
-                  <video
-                    ref={(el) => {
-                      videoRefs.current[idx] = el;
-                    }}
-                    className="h-full w-full object-cover"
-                    src={x.mp4}
-                    muted
-                    loop
-                    playsInline
-                    preload="none"
-                  />
-                )}
-                <div className="absolute bottom-3 left-3 bg-black/70 px-3 py-1 text-xs font-medium text-white">
-                  {x.label}
-                </div>
-                {/* Placeholder label */}
-                <div className="absolute top-3 left-3 right-3 bg-black/60 px-2 py-1 text-[10px] text-white/80 leading-tight">
-                  Placeholder - Video konten Instagram / TikTok
+                <div className="p-4">
+                  <p className="text-sm font-semibold text-secondary-foreground">{x.title}</p>
                 </div>
               </div>
-              <div className="p-4">
-                <p className="text-sm font-semibold text-secondary-foreground">{x.title}</p>
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <div className="mt-8 text-center">
