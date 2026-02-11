@@ -1,31 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
-
-const articles = [
-  {
-    slug: "kapan-harus-ganti-kaca-depan-mobil",
-    title: "Kapan Harus Ganti Kaca Depan Mobil?",
-    excerpt: "Kenali tanda-tanda kerusakan kaca depan yang perlu segera diganti untuk keamanan berkendara Anda.",
-    imageSrc: "/images/articles/ganti-kaca-depan.jpg",
-    imagePlaceholder: "Ilustrasi kerusakan kaca depan mobil",
-  },
-  {
-    slug: "perbedaan-kaca-oem-dan-aftermarket",
-    title: "Perbedaan Kaca OEM dan Aftermarket",
-    excerpt: "Pahami kelebihan dan kekurangan masing-masing jenis kaca untuk memilih yang sesuai kebutuhan.",
-    imageSrc: "/images/articles/oem-vs-aftermarket.jpg",
-    imagePlaceholder: "Perbandingan kaca OEM vs aftermarket",
-  },
-  {
-    slug: "keamanan-pemasangan-kaca-mobil",
-    title: "Pentingnya Pemasangan Kaca yang Benar",
-    excerpt: "Pemasangan kaca yang tidak tepat bisa membahayakan. Ketahui standar pemasangan yang aman.",
-    imageSrc: "/images/articles/pemasangan-kaca.jpg",
-    imagePlaceholder: "Proses pemasangan kaca mobil yang benar",
-  },
-];
+import { articles } from "@/data/articles";
 
 export default function ArticleTeaser() {
+  // Show only the 3 most recent articles
+  const recentArticles = articles.slice(0, 3);
+
   return (
     <section className="bg-secondary py-20" id="artikel">
       <div className="mx-auto max-w-6xl px-4">
@@ -42,31 +22,25 @@ export default function ArticleTeaser() {
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {articles.map((article) => (
+          {recentArticles.map((article) => (
             <article
               key={article.slug}
               className="group border border-secondary-foreground/10 bg-secondary-foreground/5 overflow-hidden transition-colors hover:border-primary/30"
             >
-              {/* Next.js Image with lazy loading */}
               <div className="relative aspect-[16/9] overflow-hidden">
                 <Image
-                  src={article.imageSrc}
+                  src={article.coverImage}
                   alt={article.title}
                   fill
                   loading="lazy"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
-                {/* Fallback placeholder */}
                 <div className="absolute inset-0 bg-gradient-to-br from-zinc-700 via-zinc-600 to-zinc-800 -z-10">
                   <div className="absolute inset-0 flex items-center justify-center">
                     <svg className="h-10 w-10 text-white/20" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                  </div>
-                  {/* Placeholder label */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/60 px-2 py-1.5 text-[10px] text-white/80 text-center leading-tight">
-                    Placeholder - {article.imagePlaceholder}
                   </div>
                 </div>
               </div>
@@ -90,6 +64,18 @@ export default function ArticleTeaser() {
               </div>
             </article>
           ))}
+        </div>
+
+        <div className="mt-8 text-center">
+          <Link
+            href="/artikel"
+            className="inline-flex items-center gap-1 text-sm font-medium text-primary hover:underline"
+          >
+            Lihat Semua Artikel
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </Link>
         </div>
       </div>
     </section>

@@ -4,13 +4,14 @@ import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import { articles } from "@/data/articles";
 
 export const metadata: Metadata = {
   title: "Artikel Seputar Kaca Mobil",
   description: "Informasi dan tips berguna seputar perawatan, penggantian, dan pemasangan kaca mobil dari Sentra Autoglass.",
 };
 
-// Tags for SEO - related search keywords
+// All available tags from articles
 const allTags = [
   { slug: "ganti-kaca-mobil", label: "Ganti Kaca Mobil" },
   { slug: "kaca-depan-mobil", label: "Kaca Depan Mobil" },
@@ -21,34 +22,9 @@ const allTags = [
   { slug: "home-service-kaca", label: "Home Service Kaca" },
   { slug: "garansi-kaca-mobil", label: "Garansi Kaca Mobil" },
   { slug: "kaca-mobil-bocor", label: "Kaca Mobil Bocor" },
-  { slug: "windshield", label: "Windshield" },
-];
-
-const articles = [
-  {
-    slug: "kapan-harus-ganti-kaca-depan-mobil",
-    title: "Kapan Harus Ganti Kaca Depan Mobil?",
-    excerpt: "Kenali tanda-tanda kerusakan kaca depan yang perlu segera diganti untuk keamanan berkendara Anda.",
-    date: "15 Januari 2026",
-    imageSrc: "/images/articles/ganti-kaca-depan.jpg",
-    tags: ["ganti-kaca-mobil", "kaca-depan-mobil", "kaca-mobil-retak", "windshield"],
-  },
-  {
-    slug: "perbedaan-kaca-oem-dan-aftermarket",
-    title: "Perbedaan Kaca OEM dan Aftermarket",
-    excerpt: "Pahami kelebihan dan kekurangan masing-masing jenis kaca untuk memilih yang sesuai kebutuhan.",
-    date: "10 Januari 2026",
-    imageSrc: "/images/articles/oem-vs-aftermarket.jpg",
-    tags: ["kaca-oem", "kaca-aftermarket", "ganti-kaca-mobil", "garansi-kaca-mobil"],
-  },
-  {
-    slug: "keamanan-pemasangan-kaca-mobil",
-    title: "Pentingnya Pemasangan Kaca yang Benar",
-    excerpt: "Pemasangan kaca yang tidak tepat bisa membahayakan. Ketahui standar pemasangan yang aman.",
-    date: "5 Januari 2026",
-    imageSrc: "/images/articles/pemasangan-kaca.jpg",
-    tags: ["pemasangan-kaca", "garansi-kaca-mobil", "kaca-mobil-bocor", "home-service-kaca"],
-  },
+  { slug: "perawatan-kaca", label: "Perawatan Kaca" },
+  { slug: "kaca-samping-mobil", label: "Kaca Samping" },
+  { slug: "kaca-belakang-mobil", label: "Kaca Belakang" },
 ];
 
 // Helper to get tag label from slug
@@ -134,7 +110,7 @@ export default async function ArtikelPage({ searchParams }: Props) {
                     {/* Image with Next.js Image - lazy loaded */}
                     <div className="relative aspect-[16/9] overflow-hidden">
                       <Image
-                        src={article.imageSrc}
+                        src={article.coverImage}
                         alt={article.title}
                         fill
                         loading="lazy"
@@ -152,7 +128,7 @@ export default async function ArtikelPage({ searchParams }: Props) {
                     </div>
                     
                     <div className="p-6">
-                      <span className="text-xs text-muted-foreground">{article.date}</span>
+                      <span className="text-xs text-muted-foreground">{new Date(article.date).toLocaleDateString("id-ID", { year: "numeric", month: "long", day: "numeric" })}</span>
                       <h2 className="mt-2 text-lg font-semibold text-foreground group-hover:text-primary transition-colors">
                         {article.title}
                       </h2>
@@ -194,23 +170,23 @@ export default async function ArtikelPage({ searchParams }: Props) {
                 Layanan Sentra Autoglass
               </h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                <Link href="/" className="text-sm text-primary hover:underline">
-                  Beranda - Konsultasi Ganti Kaca Mobil
+                <Link href="/layanan/ganti-kaca-depan" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Depan Mobil (Windshield)
                 </Link>
-                <Link href="/#home-service" className="text-sm text-primary hover:underline">
+                <Link href="/layanan/kaca-samping-pintu" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Samping & Kaca Pintu
+                </Link>
+                <Link href="/layanan/kaca-belakang-defogger" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Belakang + Defogger
+                </Link>
+                <Link href="/layanan/home-service" className="text-sm text-primary hover:underline">
                   Layanan Home Service Kaca Mobil
                 </Link>
-                <Link href="/#lokasi" className="text-sm text-primary hover:underline">
+                <Link href="/layanan/kalibrasi-adas" className="text-sm text-primary hover:underline">
+                  Kalibrasi ADAS Setelah Ganti Kaca
+                </Link>
+                <Link href="/lokasi" className="text-sm text-primary hover:underline">
                   Lokasi Workshop Kami
-                </Link>
-                <Link href="/#gallery" className="text-sm text-primary hover:underline">
-                  Galeri Hasil Pemasangan
-                </Link>
-                <Link href="/#social-proof" className="text-sm text-primary hover:underline">
-                  Video Dokumentasi Pemasangan
-                </Link>
-                <Link href="/#faq" className="text-sm text-primary hover:underline">
-                  FAQ - Pertanyaan Umum
                 </Link>
               </div>
             </div>
