@@ -170,23 +170,23 @@ export default async function ArtikelPage({ searchParams }: Props) {
                 Layanan Sentra Autoglass
               </h2>
               <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
-                <Link href="/" className="text-sm text-primary hover:underline">
-                  Beranda - Konsultasi Ganti Kaca Mobil
+                <Link href="/layanan/ganti-kaca-depan" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Depan Mobil (Windshield)
                 </Link>
-                <Link href="/#home-service" className="text-sm text-primary hover:underline">
+                <Link href="/layanan/kaca-samping-pintu" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Samping & Kaca Pintu
+                </Link>
+                <Link href="/layanan/kaca-belakang-defogger" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Belakang + Defogger
+                </Link>
+                <Link href="/layanan/home-service" className="text-sm text-primary hover:underline">
                   Layanan Home Service Kaca Mobil
                 </Link>
-                <Link href="/#lokasi" className="text-sm text-primary hover:underline">
+                <Link href="/layanan/kalibrasi-adas" className="text-sm text-primary hover:underline">
+                  Kalibrasi ADAS Setelah Ganti Kaca
+                </Link>
+                <Link href="/lokasi" className="text-sm text-primary hover:underline">
                   Lokasi Workshop Kami
-                </Link>
-                <Link href="/#gallery" className="text-sm text-primary hover:underline">
-                  Galeri Hasil Pemasangan
-                </Link>
-                <Link href="/#social-proof" className="text-sm text-primary hover:underline">
-                  Video Dokumentasi Pemasangan
-                </Link>
-                <Link href="/#faq" className="text-sm text-primary hover:underline">
-                  FAQ - Pertanyaan Umum
                 </Link>
               </div>
             </div>

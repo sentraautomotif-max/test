@@ -1,15 +1,17 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { LOCATIONS } from "@/data/locations";
+import { BRANCHES } from "@/data/branches";
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
-import { MapPin, Clock, Navigation } from "lucide-react";
+import { MapPin, Clock, Navigation, Phone } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Lokasi Workshop",
-  description: "Temukan lokasi workshop Sentra Autoglass terdekat di Bekasi, Tangerang, dan Surabaya. Workshop dan home service tersedia.",
+  title: "Lokasi Workshop Kaca Mobil",
+  description:
+    "Temukan lokasi workshop Sentra Autoglass terdekat di Tangerang, Bekasi, dan Surabaya. Workshop dan home service tersedia.",
 };
 
 export default function LokasiPage() {
@@ -19,11 +21,16 @@ export default function LokasiPage() {
       <main className="pt-16">
         <section className="bg-secondary py-16">
           <div className="mx-auto max-w-6xl px-4">
+            <nav className="flex items-center gap-2 text-sm text-secondary-foreground/60 mb-6">
+              <Link href="/" className="hover:text-secondary-foreground">Beranda</Link>
+              <span>/</span>
+              <span className="text-secondary-foreground">Lokasi</span>
+            </nav>
             <h1 className="text-3xl font-bold tracking-tight text-secondary-foreground md:text-4xl">
               Lokasi Workshop Sentra Autoglass
             </h1>
             <p className="mt-4 max-w-2xl text-base text-secondary-foreground/70">
-              Kunjungi workshop terdekat untuk konsultasi dan pemasangan kaca mobil. Home service juga tersedia di semua area.
+              Kunjungi workshop terdekat untuk konsultasi dan pemasangan kaca mobil. Home service juga tersedia di area yang dilayani.
             </p>
           </div>
         </section>
@@ -31,16 +38,15 @@ export default function LokasiPage() {
         <section className="bg-background py-16">
           <div className="mx-auto max-w-6xl px-4">
             <div className="grid gap-8 md:grid-cols-3">
-              {LOCATIONS.map((l) => {
-                const phone = l.branchWhatsapp ?? SITE.phone;
+              {BRANCHES.map((branch) => {
                 const waUrl = buildWhatsAppUrl(
-                  phone,
-                  `Halo Admin ${l.name.split(" – ")[1]}, saya mau konsultasi pemasangan kaca mobil. Mobil: [merek+tipe+tahun]. Bisa dibantu?`
+                  branch.whatsapp,
+                  `Halo Admin ${branch.city}, saya mau konsultasi pemasangan kaca mobil. Mobil: [merek+tipe+tahun]. Bisa dibantu?`
                 );
 
                 return (
                   <div
-                    key={l.slug}
+                    key={branch.id}
                     className="border border-border bg-background p-6 flex flex-col"
                   >
                     <div className="flex items-start gap-3">
@@ -48,27 +54,41 @@ export default function LokasiPage() {
                         <MapPin className="h-6 w-6 text-primary" />
                       </div>
                       <div className="flex-1">
-                        <h2 className="text-lg font-semibold text-foreground">{l.name}</h2>
-                        <p className="mt-2 text-xs text-muted-foreground">{l.address}</p>
+                        <h2 className="text-lg font-semibold text-foreground">{branch.name}</h2>
+                        <p className="mt-1 text-xs text-muted-foreground">{branch.address}</p>
                       </div>
                     </div>
 
-                    <div className="mt-4 space-y-3 flex-1">
+                    <div className="mt-5 space-y-3 flex-1">
                       <div className="flex items-start gap-2">
                         <Clock className="h-4 w-4 flex-shrink-0 mt-0.5 text-primary" />
                         <div className="text-xs text-muted-foreground">
                           <p className="font-medium text-foreground">Jam Operasional</p>
-                          <p>{l.hours}</p>
+                          <p>{branch.hours}</p>
                         </div>
                       </div>
 
-                      {l.serviceArea.length > 0 && (
+                      <div className="flex items-start gap-2">
+                        <Phone className="h-4 w-4 flex-shrink-0 mt-0.5 text-primary" />
+                        <div className="text-xs text-muted-foreground">
+                          <p className="font-medium text-foreground">Telepon / WhatsApp</p>
+                          <p>{branch.phone}</p>
+                        </div>
+                      </div>
+
+                      {branch.coverageAreas.length > 0 && (
                         <div className="flex items-start gap-2">
                           <MapPin className="h-4 w-4 flex-shrink-0 mt-0.5 text-primary" />
                           <div className="text-xs text-muted-foreground">
                             <p className="font-medium text-foreground">Area Layanan</p>
-                            <p>{l.serviceArea.join(", ")}</p>
+                            <p>{branch.coverageAreas.join(", ")}</p>
                           </div>
+                        </div>
+                      )}
+
+                      {branch.isHomeService && (
+                        <div className="mt-2 inline-flex items-center gap-1 rounded bg-primary/10 px-2 py-1 text-[10px] font-medium text-primary">
+                          Home Service Tersedia
                         </div>
                       )}
                     </div>
@@ -76,7 +96,7 @@ export default function LokasiPage() {
                     <div className="mt-6 flex flex-col gap-3">
                       <a
                         href={waUrl}
-                        data-cta={`wa_lokasi_${l.slug}`}
+                        data-cta={`wa_lokasi_${branch.id}`}
                         className="flex items-center justify-center gap-2 bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90"
                       >
                         <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -85,7 +105,7 @@ export default function LokasiPage() {
                         Konsultasi via WhatsApp
                       </a>
                       <a
-                        href={l.mapsUrl}
+                        href={branch.mapsUrl}
                         target="_blank"
                         rel="noreferrer"
                         className="flex items-center justify-center gap-2 border border-border px-4 py-3 text-sm font-semibold text-foreground transition-colors hover:bg-muted"
@@ -98,35 +118,68 @@ export default function LokasiPage() {
                 );
               })}
             </div>
+
+            {/* Internal links to layanan */}
+            <div className="mt-16 border-t border-border pt-8">
+              <h2 className="text-lg font-semibold text-foreground">
+                Layanan Tersedia di Semua Cabang
+              </h2>
+              <div className="mt-4 grid gap-4 sm:grid-cols-2 md:grid-cols-3">
+                <Link href="/layanan/ganti-kaca-depan" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Depan Mobil
+                </Link>
+                <Link href="/layanan/kaca-samping-pintu" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Samping & Pintu
+                </Link>
+                <Link href="/layanan/kaca-belakang-defogger" className="text-sm text-primary hover:underline">
+                  Ganti Kaca Belakang + Defogger
+                </Link>
+                <Link href="/layanan/home-service" className="text-sm text-primary hover:underline">
+                  Home Service Kaca Mobil
+                </Link>
+                <Link href="/layanan/kalibrasi-adas" className="text-sm text-primary hover:underline">
+                  Kalibrasi ADAS
+                </Link>
+                <Link href="/artikel" className="text-sm text-primary hover:underline">
+                  Artikel Seputar Kaca Mobil
+                </Link>
+              </div>
+            </div>
           </div>
+
           {/* Local Business Schema - JSON-LD */}
-          {LOCATIONS.map((location) => (
+          {BRANCHES.map((branch) => (
             <script
-              key={location.slug}
+              key={branch.id}
               type="application/ld+json"
               dangerouslySetInnerHTML={{
                 __html: JSON.stringify({
                   "@context": "https://schema.org",
-                  "@type": "LocalBusiness",
-                  name: location.name,
+                  "@type": "AutoRepair",
+                  name: branch.name,
                   image: `${SITE.url}/og.jpg`,
-                  description: `Kaca mobil terpercaya di ${location.city}. Pemasangan, penggantian, dan home service tersedia.`,
+                  description: `Spesialis pemasangan dan penggantian kaca mobil di ${branch.city}. Workshop dan home service tersedia.`,
                   address: {
                     "@type": "PostalAddress",
-                    streetAddress: location.address,
-                    addressLocality: location.city,
+                    streetAddress: branch.address,
+                    addressLocality: branch.city,
                     addressCountry: "ID",
                   },
-                  telephone: SITE.phone,
+                  telephone: branch.phone,
                   openingHoursSpecification: {
                     "@type": "OpeningHoursSpecification",
-                    dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                    dayOfWeek: branch.id === "surabaya"
+                      ? ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+                      : ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
                     opens: "08:00",
                     closes: "17:00",
                   },
-                  url: SITE.url,
-                  sameAs: [],
-                  areaServed: location.serviceArea,
+                  url: `${SITE.url}/lokasi`,
+                  areaServed: branch.coverageAreas.map((area) => ({
+                    "@type": "City",
+                    name: area,
+                  })),
+                  priceRange: "$$",
                 }),
               }}
             />

@@ -24,57 +24,6 @@ const allTags = [
   { slug: "kaca-belakang-mobil", label: "Kaca Belakang" },
 ];
 
-// Helper function to parse markdown to HTML
-function parseMarkdownToHtml(markdown: string): string {
-  let html = markdown;
-
-  // Headers
-  html = html.replace(/^### (.*?)$/gm, "<h3 className=\"text-lg font-semibold text-foreground mt-4 mb-2\">$1</h3>");
-  html = html.replace(/^## (.*?)$/gm, "<h2 className=\"text-xl font-bold text-foreground mt-6 mb-3\">$1</h2>");
-  html = html.replace(/^# (.*?)$/gm, "<h1 className=\"text-2xl font-bold text-foreground mt-0 mb-4\">$1</h1>");
-
-  // Bold and italic
-  html = html.replace(/\*\*(.*?)\*\*/g, "<strong>$1</strong>");
-  html = html.replace(/\*(.*?)\*/g, "<em>$1</em>");
-
-  // Links
-  html = html.replace(/\[(.*?)\]\((.*?)\)/g, "<a href=\"$2\" className=\"text-primary hover:underline\">$1</a>");
-
-  // Lists (simple bullet points)
-  html = html.replace(/^- (.*?)$/gm, "<li className=\"ml-4\">$1</li>");
-
-  // Line breaks for paragraphs
-  const lines = html.split("\n");
-  let result = "";
-  let inList = false;
-  for (const line of lines) {
-    if (line.startsWith("<li")) {
-      if (!inList) {
-        result += "<ul className=\"list-disc pl-6 space-y-1 my-3\">";
-        inList = true;
-      }
-      result += line + "\n";
-    } else if (inList && !line.startsWith("<li")) {
-      result += "</ul>";
-      inList = false;
-      if (line.trim()) {
-        result += `<p className="text-base leading-relaxed text-muted-foreground my-3">${line}</p>`;
-      }
-    } else if (line.trim()) {
-      if (!line.startsWith("<h") && !line.startsWith("<p")) {
-        result += `<p className="text-base leading-relaxed text-muted-foreground my-3">${line}</p>`;
-      } else {
-        result += line;
-      }
-    }
-  }
-  if (inList) {
-    result += "</ul>";
-  }
-
-  return result;
-}
-
 // Helper to get tag label from slug
 function getTagLabel(tagSlug: string): string {
   return allTags.find(t => t.slug === tagSlug)?.label || tagSlug;
@@ -244,23 +193,33 @@ export default async function ArtikelDetailPage({ params }: Props) {
               <h2 className="text-lg font-semibold text-foreground">Layanan Kami</h2>
               <ul className="mt-4 space-y-2">
                 <li>
-                  <Link href="/#home-service" className="text-sm text-primary hover:underline">
-                    Layanan Home Service - Teknisi datang ke lokasi Anda
+                  <Link href="/layanan/ganti-kaca-depan" className="text-sm text-primary hover:underline">
+                    Ganti Kaca Depan Mobil (Windshield)
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/layanan/kaca-samping-pintu" className="text-sm text-primary hover:underline">
+                    Ganti Kaca Samping & Kaca Pintu
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/layanan/kaca-belakang-defogger" className="text-sm text-primary hover:underline">
+                    Ganti Kaca Belakang + Defogger
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/layanan/home-service" className="text-sm text-primary hover:underline">
+                    Home Service - Teknisi Datang ke Lokasi
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/layanan/kalibrasi-adas" className="text-sm text-primary hover:underline">
+                    Kalibrasi ADAS Setelah Ganti Kaca
                   </Link>
                 </li>
                 <li>
                   <Link href="/lokasi" className="text-sm text-primary hover:underline">
                     Lokasi Workshop - Tangerang, Bekasi, Surabaya
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/#gallery" className="text-sm text-primary hover:underline">
-                    Galeri Hasil Pemasangan Kaca Mobil
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/#faq" className="text-sm text-primary hover:underline">
-                    FAQ - Pertanyaan Umum
                   </Link>
                 </li>
               </ul>

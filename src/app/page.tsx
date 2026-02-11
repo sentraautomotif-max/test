@@ -1,6 +1,8 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import TrustIndicators from "@/components/TrustIndicators";
+import ServicesOverview from "@/components/ServicesOverview";
+import HowItWorks from "@/components/HowItWorks";
 import ResultsVideos from "@/components/ResultsVideos";
 import PremiumGallery from "@/components/PremiumGallery";
 import BrandPartners from "@/components/BrandPartners";
@@ -17,11 +19,17 @@ export default function HomePage() {
     <>
       <Header />
       <main>
-        {/* Hero with video background */}
+        {/* Hero with background image */}
         <Hero />
         
         {/* Trust indicators - quick stats */}
         <TrustIndicators />
+        
+        {/* Services overview with links to detail pages */}
+        <ServicesOverview />
+        
+        {/* How it works - step by step */}
+        <HowItWorks />
         
         {/* Social proof video slider */}
         <ResultsVideos />

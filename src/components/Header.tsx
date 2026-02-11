@@ -34,20 +34,20 @@ export default function Header() {
 
         <nav className="hidden items-center gap-8 text-sm md:flex">
           <a
+            href="#layanan"
+            className={`font-medium transition-colors hover:text-primary ${
+              isScrolled ? "text-muted-foreground" : "text-white/80 hover:text-white"
+            }`}
+          >
+            Layanan
+          </a>
+          <a
             href="#social-proof"
             className={`font-medium transition-colors hover:text-primary ${
               isScrolled ? "text-muted-foreground" : "text-white/80 hover:text-white"
             }`}
           >
             Hasil Kerja
-          </a>
-          <a
-            href="#gallery"
-            className={`font-medium transition-colors hover:text-primary ${
-              isScrolled ? "text-muted-foreground" : "text-white/80 hover:text-white"
-            }`}
-          >
-            Galeri
           </a>
           <a
             href="#lokasi"
@@ -57,6 +57,14 @@ export default function Header() {
           >
             Lokasi
           </a>
+          <Link
+            href="/artikel"
+            className={`font-medium transition-colors hover:text-primary ${
+              isScrolled ? "text-muted-foreground" : "text-white/80 hover:text-white"
+            }`}
+          >
+            Artikel
+          </Link>
           <a
             href="#faq"
             className={`font-medium transition-colors hover:text-primary ${
