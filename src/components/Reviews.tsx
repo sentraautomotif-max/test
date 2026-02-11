@@ -1,5 +1,8 @@
+"use client";
+
 import { SITE } from "@/lib/seo";
 import { buildWhatsAppUrl } from "@/lib/tracking";
+import { useReveal } from "@/hooks/useReveal";
 
 const reviews = [
   {
@@ -48,6 +51,7 @@ function StarRating({ rating }: { rating: number }) {
 
 export default function Reviews() {
   const waUrl = buildWhatsAppUrl(SITE.phone, "Halo Sentra, saya mau tanya tentang pengalaman pemasangan kaca mobil. Mobil: [merek+tipe+tahun].");
+  const { ref, isVisible } = useReveal(0.1);
 
   return (
     <section className="bg-background py-20" id="reviews">
@@ -71,11 +75,14 @@ export default function Reviews() {
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {reviews.map((review) => (
+        <div ref={ref} className="mt-12 grid gap-6 md:grid-cols-3">
+          {reviews.map((review, idx) => (
             <div
               key={review.id}
-              className="border border-border bg-background p-6"
+              className={`border border-border bg-background p-6 transition-colors hover:border-primary/20 ${
+                isVisible ? "animate-count-in" : "opacity-0"
+              }`}
+              style={{ animationDelay: `${idx * 120}ms` }}
             >
               <StarRating rating={review.rating} />
               <p className="mt-4 text-sm leading-relaxed text-foreground">
