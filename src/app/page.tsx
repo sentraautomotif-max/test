@@ -13,61 +13,47 @@ import LocationsSection from "@/components/LocationsSection";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import IntroLoader from "@/components/IntroLoader";
-import RevealSection from "@/components/RevealSection";
 
 export default function HomePage() {
   return (
     <>
-      <IntroLoader />
       <Header />
       <main>
         {/* Hero with background image */}
         <Hero />
         
-        <RevealSection>
-          <TrustIndicators />
-        </RevealSection>
+        {/* Trust indicators - quick stats */}
+        <TrustIndicators />
         
-        <RevealSection delay={80}>
-          <ServicesOverview />
-        </RevealSection>
+        {/* Services overview with links to detail pages */}
+        <ServicesOverview />
         
-        <RevealSection>
-          <HowItWorks />
-        </RevealSection>
+        {/* How it works - step by step */}
+        <HowItWorks />
         
-        <RevealSection direction="left">
-          <ResultsVideos />
-        </RevealSection>
+        {/* Social proof video slider */}
+        <ResultsVideos />
         
-        <RevealSection direction="scale">
-          <PremiumGallery />
-        </RevealSection>
+        {/* Premium car gallery */}
+        <PremiumGallery />
         
-        <RevealSection>
-          <BrandPartners />
-        </RevealSection>
+        {/* Brand partners */}
+        <BrandPartners />
         
-        <RevealSection>
-          <Reviews />
-        </RevealSection>
+        {/* Customer reviews */}
+        <Reviews />
         
-        <RevealSection direction="right">
-          <HomeServiceBanner />
-        </RevealSection>
+        {/* Home service banner */}
+        <HomeServiceBanner />
         
-        <RevealSection>
-          <ArticleTeaser />
-        </RevealSection>
+        {/* Article teaser for SEO */}
+        <ArticleTeaser />
         
-        <RevealSection>
-          <LocationsSection />
-        </RevealSection>
+        {/* Locations */}
+        <LocationsSection />
         
-        <RevealSection>
-          <FAQ />
-        </RevealSection>
+        {/* FAQ */}
+        <FAQ />
       </main>
       <Footer />
       <WhatsAppButton />

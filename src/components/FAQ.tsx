@@ -32,7 +32,7 @@ export default function FAQ() {
           {FAQ_ITEMS.map((x) => (
             <details
               key={x.q}
-              className="group border border-border bg-background p-5 transition-colors hover:border-primary/20 [&_summary::-webkit-details-marker]:hidden"
+              className="group border border-border bg-background p-5 [&_summary::-webkit-details-marker]:hidden"
             >
               <summary className="flex cursor-pointer items-center justify-between gap-4 text-sm font-semibold text-foreground">
                 {x.q}
